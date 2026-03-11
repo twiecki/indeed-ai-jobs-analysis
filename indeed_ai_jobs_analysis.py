@@ -140,14 +140,27 @@ def _(go, intervention, make_subplots, overall_norm, swe_norm):
         )
     )
 
-    fig.add_vline(
-        x=intervention.isoformat(),
-        line_dash="dot",
-        line_color="#E74C3C",
+    # Use add_shape + add_annotation instead of add_vline to avoid
+    # plotly bug with sum() on datetime values when annotation is set
+    fig.add_shape(
+        type="line",
+        x0=intervention,
+        x1=intervention,
+        y0=0,
+        y1=1,
+        yref="paper",
+        line=dict(dash="dot", color="#E74C3C"),
         opacity=0.5,
-        annotation_text="AI coding tools<br>cross threshold",
-        annotation_position="top right",
-        annotation_font_size=10,
+    )
+    fig.add_annotation(
+        x=intervention,
+        y=1,
+        yref="paper",
+        text="AI coding tools<br>cross threshold",
+        showarrow=False,
+        xanchor="left",
+        yanchor="top",
+        font=dict(size=10),
     )
 
     fig.update_layout(
