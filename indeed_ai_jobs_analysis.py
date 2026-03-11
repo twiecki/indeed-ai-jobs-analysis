@@ -67,7 +67,7 @@ def _(mo):
     )
     resample_freq = mo.ui.dropdown(
         options={"Daily": "D", "Weekly": "W", "Monthly": "ME"},
-        value="W",
+        value="Weekly",
         label="Resample frequency",
     )
     mo.hstack([start_year, resample_freq], justify="start")
