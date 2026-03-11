@@ -1,0 +1,15 @@
+[project]
+name = "indeed-ai-jobs-analysis"
+version = "0.1.0"
+description = "Analysis of Indeed AI/SWE job postings divergence"
+requires-python = ">=3.11"
+dependencies = [
+    "marimo>=0.18",
+    "pandas>=2.0",
+    "numpy>=1.24",
+    "plotly>=5.0",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
