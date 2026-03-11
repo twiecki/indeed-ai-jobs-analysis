@@ -8,6 +8,7 @@ dependencies = [
     "pandas>=2.0",
     "numpy>=1.24",
     "plotly>=5.0",
+    "causalpy>=0.4",
 ]
 
 [build-system]

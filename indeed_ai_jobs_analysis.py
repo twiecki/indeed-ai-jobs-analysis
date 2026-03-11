@@ -141,7 +141,7 @@ def _(go, intervention, make_subplots, overall_norm, swe_norm):
     )
 
     fig.add_vline(
-        x=intervention,
+        x=intervention.isoformat(),
         line_dash="dot",
         line_color="#E74C3C",
         opacity=0.5,
@@ -185,6 +185,49 @@ def _(gap, go):
     )
     fig_gap
     return (fig_gap,)
+
+
+@app.cell
+def _(mo):
+    mo.md("### CausalPy: Interrupted Time Series Analysis")
+    return
+
+
+@app.cell
+def _(df_rs, intervention, np):
+    import causalpy as cp
+
+    # Prepare data for CausalPy
+    df_cp = df_rs[["swe", "overall"]].copy()
+
+    result = cp.InterruptedTimeSeries(
+        df_cp,
+        treatment_time=intervention,
+        formula="swe ~ 1 + overall",
+        model=cp.pymc_models.LinearRegression(
+            sample_kwargs={"cores": 1, "chains": 2, "draws": 2000, "tune": 1000}
+        ),
+    )
+    return (result,)
+
+
+@app.cell
+def _(result):
+    fig_causal, _ = result.plot()
+    fig_causal.suptitle(
+        "Causal Impact: SWE Job Postings\n(controlling for overall job market)",
+        y=1.02,
+        fontsize=14,
+    )
+    fig_causal.tight_layout()
+    fig_causal
+    return (fig_causal,)
+
+
+@app.cell
+def _(mo, result):
+    mo.md(f"```\n{result.summary()}\n```")
+    return
 
 
 @app.cell
