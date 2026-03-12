@@ -56,7 +56,9 @@ def _(mo, mo_stats):
 
 @app.cell
 def _(df, mo):
-    mo.ui.table(df.reset_index().tail(20), label="Recent data points")
+    _tbl = df.reset_index().tail(20).copy()
+    _tbl["date"] = _tbl["date"].dt.strftime("%Y-%m-%d")
+    mo.ui.table(_tbl, label="Recent data points")
     return
 
 
@@ -77,7 +79,7 @@ def _(mo):
 @app.cell
 def _(df, np, pd, resample_freq, start_year):
     # Filter and resample
-    _start = f"{start_year.value}-01-01"
+    _start = f"{int(start_year.value)}-01-01"
     df_filtered = df.loc[_start:]
 
     freq = resample_freq.value
@@ -239,7 +241,8 @@ def _(result):
 
 @app.cell
 def _(mo, result):
-    mo.md(f"```\n{result.summary()}\n```")
+    _summary = result.summary() or ""
+    mo.md(f"```\n{_summary}\n```")
     return
 
 
